@@ -1,11 +1,19 @@
 import os
 
+# extensions we associate with scans
+imageFileExtensions = ['.jpg','.JPG','.jpeg','.JPEG','.png','.PNG',]
+# extensions we know we don't want to deal with
+ignoreFileExtensions = ['.mood','.sfv','.txt',]
+
 def deduce_name(path):
 	'''
 	Deduce a file/directory name from a path
 	'''
 	head, tail = os.path.split(path)
 	return tail if tail else head
+
+class ImageFile:
+	pass
 
 class Folder:
 	'''
@@ -38,6 +46,11 @@ class Folder:
 				self.files.append(File(os.path.join(self.path, name)))
 		for folder in self.folders:
 			folder.scan()
+		for file in self.files:
+			try:
+				file.scan()
+			except ImageFile:
+				self.numScans += 1
 
 class File:
 	'''
@@ -46,6 +59,10 @@ class File:
 	name: filename
 	path: full path (absolute or relative) to the file from current directory
 	extension: file extension
+	artist:
+	album:
+	title:
+	track:
 	'''
 	def __init__(self, path, name=None):
 		self.name = name if name else deduce_name(path)
@@ -55,6 +72,30 @@ class File:
 			self.extension = os.path.splitext(self.name)[1]
 		except IndexError:
 			self.extension = None
-	
+
 	def __str__(self):
 		return self.name
+
+	def scan(self):
+		global imageFileExtensions
+		global ignoreFileExtensions
+
+		if self.extension in imageFileExtensions:
+			raise ImageFile
+		elif self.extension in ignoreFileExtensions:
+			pass
+		else:
+			import mutagen
+
+			tags = mutagen.File(self.path)
+			if not tags:
+				import sys
+				sys.stderr.write("I don't know what to do with %s!\n" % self.path)
+			else:
+				if isinstance(tags, mutagen.mp3.MP3):
+					import mutagen.easyid3
+					tags = mutagen.easyid3.EasyID3(self.path)
+				self.artist = tags['artist'] if 'artist' in tags else None
+				self.album = tags['album'] if 'album' in tags else None
+				self.title = tags['title'] if 'title' in tags else None
+				self.track = tags['tracknumber'] if 'tracknumber' in tags else None
