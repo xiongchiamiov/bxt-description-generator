@@ -1,20 +1,29 @@
-#!/usr/bin/env ipython
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 This software is licensed under version 2.0 of the WTFPL (see COPYING for details)
 """
 
-import sys
-import os
-from models import *
-
-# Check to see if we have all the information we need
-try:
-	directory = sys.argv[1]
-	template = sys.argv[2]
-except IndexError:
-	print "Usage: " + sys.argv[0] + " <directory> <template>"
-	exit()
-
-root = Folder(directory)
-root.scan()
+# are we running this standalone, rather than as a module?
+if __name__ == '__main__':
+	import sys
+	import os
+	from models import *
+	from jinja2 import Environment, PackageLoader
+	
+	# Check to see if we have all the information we need
+	try:
+		#directory = unicode(sys.argv[1])
+		directory = sys.argv[1]
+		template = sys.argv[2]
+	except IndexError:
+		print "Usage: " + sys.argv[0] + " <directory> <template>"
+		exit()
+	
+	root = Folder(directory)
+	root.scan()
+	
+	env = Environment(loader=PackageLoader('bxt_description_generator', 'templates'))
+	template = env.get_template(template)
+	print template.render(root=root)

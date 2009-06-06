@@ -24,3 +24,17 @@
 14:56 <Chiyachan> Well, if you're able to make it.
 14:56 <Chiyachan> Not only will I love you.
 14:56 <Chiyachan> Other people who make large OST torrents will love you.
+
+foo = root.folders[0].folders[0].files['music'][5]
+
+== works ==
+print foo
+print foo.name
+foo.name
+foo.name.decode('utf-8')
+unicode(foo.name, 'utf-8')
+
+== doesn't ==
+foo.name.decode()
+unicode(foo.name)
+unicode(foo.name, 'ascii')
