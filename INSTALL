@@ -28,3 +28,43 @@ Get the Script
 --------------
 1. Open a command prompt (Start -> Run -> cmd) and type `cd C:\Python25\Lib`
 2. Type `git clone git://github.com/xiongchiamiov/bxt-description-generator.git bxt_description_generator`
+
+Arch Linux
+==========
+Python, Jinja, Mutagen, Git
+---------------------------
+1. Go to Terminal, whatever terminal program you may have.
+2. Type `su -` and then type in your root password.
+3. Type `pacman -Sy python python-jinja mutagen git` while in su mode and y for the confirmation prompt to install.
+
+Get the script
+--------------
+1. Go to Terminal, whatever terminal program you may have.
+2. Type `su -` and then type in your root password.
+3. Type `git clone git://github.com/xiongchiamiov/bxt-description-generator.git /usr/lib/python2.6/bxt_description_generator`
+
+Ubuntu
+======
+Python, Jinja, Mutagen, Git
+---------------------------
+1. Go to Terminal, whatever terminal program you may have.
+2. Type `sudo apt-get install python python-jinja2 python-mutagen git-core` and y for the confirmation prompt to install.
+
+Get the script
+--------------
+1. Go to Terminal, whatever terminal program you may have.
+2. Type `sudo git clone git://github.com/xiongchiamiov/bxt-description-generator.git /usr/lib/python2.6/bxt_description_generator`
+
+Debian
+======
+Python, Jinja, Mutagen, Git
+---------------------------
+1. Go to Terminal, whatever terminal program you may have.
+2. Type `su -` and then type in your root password.
+3. Type `apt-get install python python-jinja2 python-mutagen git-core` and y for the confirmation prompt to install.
+
+Get the script
+--------------
+1. Go to Terminal, whatever terminal program you may have.
+2. Type `su -` and then type in your root password.
+3. Type `git clone git://github.com/xiongchiamiov/bxt-description-generator.git /usr/lib/python2.5/bxt_description_generator`
