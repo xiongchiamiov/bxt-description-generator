@@ -5,7 +5,7 @@ import os
 # extensions we associate with scans
 imageFileExtensions = ['jpg','JPG','jpeg','JPEG','png','PNG',]
 # extensions we know we don't want to deal with
-ignoreFileExtensions = ['mood','sfv','txt',]
+ignoreFileExtensions = ['mood','sfv','txt','nfo','m3u','ini','lnk','md5',]
 
 def deduce_name(path):
 	'''
