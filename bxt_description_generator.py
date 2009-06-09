@@ -6,7 +6,7 @@ This software is licensed under version 2.0 of the WTFPL (see COPYING for detail
 """
 
 # are we running this standalone, rather than as a module?
-if __name__ == '__main__':
+def main():
 	import sys
 	import os
 	from models import *
@@ -27,3 +27,6 @@ if __name__ == '__main__':
 	env = Environment(loader=PackageLoader('bxt_description_generator', 'templates'))
 	template = env.get_template(template)
 	print template.render(root=root)
+
+if __name__ == '__main__':
+	sys.exit(main())
