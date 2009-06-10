@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<!-- REMOVE THIS AFTER TESTING!! -->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+
+	<style type="text/css">
+		body {
+			font-size: 12pt;
+		}
+		.item {
+			font-family: Cambria, Times New Roman, serif;
+			font-size: 14px;
+			font-weight: bold;
+			color: black;
+		}
+		.list {
+			font-family: Cambria, Times New Roman, serif;
+			font-size: 12px;
+			padding-left: 5px;
+		}
+		
+		.album {
+			font-weight: bold;
+			color: black;
+		}
+		
+		.menufield {
+			width: 220px;
+			height: 850px;
+			background-image: url("http://www.no-lifer.nl/box/background.png");
+			float: left;
+			border-width: 1px;
+			border-color: black;
+			border-style: solid;
+			color: #ffffff;
+		}
+		.menuitem {
+			font-family:  Joyful Juliana,Cambria, Times New Roman, serif;
+			font-color: #ffffff;
+			background-image: url("http://www.no-lifer.nl/box/menuitem.png");
+			width: 200px;
+			margin-top: 3px;
+			height: 25px;
+			float: left;
+			clear: left;
+			overflow: hidden;
+			border-width: 1px;
+			border-color: black;
+			border-style: solid;
+			margin-left: 5px;
+			padding-left: 5px;
+			color: #ffffff;
+		}
+		.subitem {
+			font-family:  Joyful Juliana,Cambria, Times New Roman, serif;
+			background-image: url("http://www.no-lifer.nl/box/listitem.png");
+			margin-left: 10px;
+			margin-top: 3px;
+			background-color: yellow;
+			width: 200px;
+			height: 25px;
+			float: left;
+			clear: left;
+			overflow: hidden;
+			border-width: 1px;
+			border-color: black;
+			border-style: solid;
+			padding-left: 5px;
+			color: #ffffff;
+		}
+		
+		.link {
+			text-decoration: none;
+			cursor: pointer;
+			color: #ffffff;
+		}
+		
+		#sub2 {
+			display: none;
+			color: #ffffff;
+		}
+		
+		.content {
+			float: left;
+			margin-left: 2px;
+			width: 710px;
+			height: 850px;
+			margin-top: -18px;
+			background-image: url("http://www.no-lifer.nl/box/background.png");
+			display: none;
+			border-width: 1px;
+			border-color: black;
+			border-style: solid;
+			color: black;
+		}
+		
+		.image {
+			margin-top: 5px;
+			float: right;
+		}
+	</style>
+</head>
+<body>
+
+	<script language="javascript">
+		function toggleDiv(divid) {
+			$('#'+divid).toggle();
+		}
+		function togglecontent(divid) {
+			$('.content').css("display", "none");
+			$('#'+divid).css("display", "block");
+		}
+	</script>
+	
+	<div class=menufield id=menu>
+		{% for folder in root.folders %}
+		<div class=menuitem id=main1><a class="link" onclick="toggleDiv('{{folder.name|replace(" ", "_")|replace(".", "_")}}');">{{folder.name}}</a></div>
+		<div id={{folder.name|replace(" ", "_")|replace(".", "_")}} style="display:none;">
+			{% for album in folder.folders %}
+			<div class=subitem ><a  class="link" onclick="togglecontent('{{(folder.name+"_"+album.name)|replace(" ", "_")|replace(".", "_")}}')">{{album.name}}</a></div>
+			{% endfor %}
+		</div>
+		{% endfor %}
+	
+		<div class=menuitem style="margin-top:50px;";id=main1><a class="link" onclick="togglecontent('changelog')">Information</a></div>
+		
+	</div>		
+
+	<br />
+	
+	{% for folder in root.folders %}
+	{% for album in folder.folders %}
+	<div class='content' id='{{(folder.name+"_"+album.name)|replace(" ", "_")|replace(".", "_")}}'>
+	<div style="float:left;">
+	
+	<p class="item">Album Info:</p>
+	<p class="list">
+	Title: {{album.name}}<br/>
+	Artist: {{album.artists|join(', ')}}<br/>
+	</p>
+	<p class="item">File Info:</p>
+	<p class="list">
+	{% if album.bitrate %}
+	Bitrate : {{album.bitrate}} kbps<br/>
+	{% endif %}
+	Codec : {{album.extensions|join(', ')}}<br/>
+	Ripper : FILL THIS IN YOURSELF<br/>
+	</p>
+	<p class="item">Track List:</p>
+	<p class="list">
+	
+	{% for file in album.files['music'] %}
+	{{loop.index}}. {{file.title}}<br/>
+	{% endfor %}
+	</p>
+		
+	{% if album.folders %}
+	<p class="item">Scans List:</p>
+	<p class="list">
+	{% for file in album.folders[0].files['scans'] %}
+	{{loop.index}}. {{file}}<br/>
+	{% endfor %}
+	</p>
+	
+	{% elif album.files['scans'] %}
+	
+	<p class="item">Scans List:</p>
+	<p class="list">
+	{% for file in album.files['scans'] %}
+	{{loop.index}}. {{file}}<br/>
+	{% endfor %}
+	</p>
+	
+	{% endif %}
+				</div>
+				<div class="image">
+				<!--<img src="http://i19.photobucket.com/albums/b196/Baloe551/Elfjespunt/Fairy%203/fairy-anime.jpg" />-->
+				</div>
+	</div>
+	{% endfor %}
+	{% endfor %}
+	
+	<!----------------------------------------------------------------------------->
+	
+	<!-- Content changelog -->
+	<div class='content' id='changelog' >
+	<div style="float:left;">
+	
+	<p class="item">Uploader's Comment</p>
+				<p class="list">
+					If you have more information for the music please post it in comment or pm me<br/><br/>
+					Description made by me
+					
+				</p>
+	
+				
+	<p class="item">Change Log</p>
+				<p class="list">
+				07-01-2009:<br/>
+				Finished the description layout<br/>
+				Requested torrent swap<br/>
+				</p>
+				
+	
+	<p class="item">Links</p>
+				<p class="list">
+					<a target="_blank" href="http://www.boxtorrents.com/torrent/142086/AHQ_Gundam_SEED_DESTINY_01-50_Dual_Audio_H264.html">[AHQ] Gundam SEED DESTINY 01-50 [Dual Audio] H264</a><br/>
+					<a target="_blank" href="http://www.boxtorrents.com/torrent/140794/ZaOtaku_Gundam_SEED_Destiny_TV_Movie_1_The_Shattered_World.html">[ZaOtaku]Gundam SEED Destiny TV Movie 1 "The Shattered World"</a><br/>
+					<a target="_blank" href="http://www.boxtorrents.com/torrent/130340/Zeonic-Corps_Gundam_SEED_Destiny_Special_Edition_704x396_H264_DVD.html">[Zeonic-Corps] Gundam SEED Destiny: Special Edition [704x396][H264][DVD]  </a><br/>
+					<a target="_blank" href="http://www.boxtorrents.com/torrent/131640/Gundam_Music_of_Cosmic_Era_(Gundam_SEED_SEED_Destiny_CE_73_STARGAZER).html">Gundam Music of Cosmic Era (Gundam SEED, SEED Destiny, & CE 73 STARGAZER)  </a><br/>
+	
+					<a target="_blank" href="http://www.boxtorrents.com/torrent/129471/Gundam_SEED_DESTINY_OST_1_-_4_Symphony_SEED_DESTINY.html">Gundam SEED DESTINY OST 1 - 4 & Symphony SEED DESTINY  </a><br/>
+					<a target="_blank" href="http://www.boxtorrents.com/torrent/129281/Gundam_SEED_Destiny_Suits_6_-_10.html">Gundam SEED Destiny Suits 6 - 10</a><br/>
+				</p>
+				</div>
+				
+				<div class="image">
+				
+				</div>
+	</div>
+	<!----------------------------------------------------------------------------->
+	
+	<!-- Content changelog -->
+	<div class='content' style="display:block;" id='default' >
+	<div style="float:left;">
+	
+	<p class="item">Welcome</p>
+				<p class="list">
+					Konnichiwa
+					
+				</p>
+				</div>
+				<div class="image">
+				
+				</div>
+	
+	</div>
+	<!----------------------------------------------------------------------------->
+	
+	
+	<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+	<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+	<br /><br /><br/>
+
+
+<div style="clear: both;"></div></body>
