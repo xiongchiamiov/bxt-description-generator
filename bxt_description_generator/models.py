@@ -133,9 +133,13 @@ class File:
 		elif self.extension in ignoreFileExtensions:
 			raise UnknownFileException
 		else:
-			import mutagen
+			import mutagen.mp3
 
-			tags = mutagen.File(self.path)
+			try:
+				tags = mutagen.File(self.path)
+			except mutagen.mp3.HeaderNotFoundError:
+				import sys
+				sys.stderr.write("I can't pull information out of \"%s\"!\n" % self.path)
 			if not tags:
 				import sys
 				sys.stderr.write("I don't know what to do with \"%s\"!\n" % self.path)
