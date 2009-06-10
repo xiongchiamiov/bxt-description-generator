@@ -7,6 +7,11 @@ This software is licensed under version 2.0 of the WTFPL (see COPYING for detail
 
 # are we running this standalone, rather than as a module?
 def main():
+	import sys
+	import os
+	from models import *
+	from jinja2 import Environment, PackageLoader
+	
 	# Check to see if we have all the information we need
 	try:
 		#directory = unicode(sys.argv[1])
@@ -24,9 +29,4 @@ def main():
 	print template.render(root=root)
 
 if __name__ == '__main__':
-	import sys
-	import os
-	from models import *
-	from jinja2 import Environment, PackageLoader
-	
 	sys.exit(main())
