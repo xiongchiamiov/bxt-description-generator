@@ -6,7 +6,7 @@ import sys
 def main():
 	setup (
 		name = 'bxt_description_generator',
-		version = '0.1',
+		version = '0.2',
 		description = 'BoxTorrents Description Generator',
 		author = 'xiong_chiamiov',
 		author_email = 'xiong.chiamiov@gmail.com',
@@ -24,7 +24,7 @@ def main():
 			tgp = bxt_description_generator.bxt_description_generator:main
 		""",
 		classifiers = [
-			"Development Status :: 3 - Alpha",
+			"Development Status :: 4 - Beta",
 			"Environment :: Console",
 			"License :: Other/Proprietary License",
 			"Operating System :: OS Independent",
