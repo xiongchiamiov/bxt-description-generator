@@ -106,7 +106,15 @@
 
 	<script language="javascript">
 		function toggleDiv(divid) {
-			$('#'+divid).toggle();
+			// This *should* work, but there seems to be an odd bug in JQuery,
+			// so we reimplement it instead
+			//$('#'+divid).toggle();
+			
+			if ($('#'+divid).css("display") == "none") {
+				$('#'+divid).show();
+			} else {
+				$('#'+divid).hide();
+			}
 		}
 		function togglecontent(divid) {
 			$('.content').css("display", "none");
