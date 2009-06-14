@@ -124,10 +124,10 @@
 	
 	<div class=menufield id=menu>
 		{% for folder in root.folders %}
-		<div class=menuitem id=main1><a class="link" onclick="toggleDiv('{{folder.name|replace(" ", "_")|replace(".", "_")}}');">{{folder.name}}</a></div>
-		<div id={{folder.name|replace(" ", "_")|replace(".", "_")}} style="display:none;">
+		<div class=menuitem id=main1><a class="link" onclick="toggleDiv('{{folder.name|cleanify}}');">{{folder.name}}</a></div>
+		<div id={{folder.name|cleanify}} style="display:none;">
 			{% for album in folder.folders %}
-			<div class=subitem ><a  class="link" onclick="togglecontent('{{(folder.name+"_"+album.name)|replace(" ", "_")|replace(".", "_")}}')">{{album.name}}</a></div>
+			<div class=subitem ><a  class="link" onclick="togglecontent('{{(folder.name+"_"+album.name)|cleanify}}')">{{album.name}}</a></div>
 			{% endfor %}
 		</div>
 		{% endfor %}
@@ -140,7 +140,7 @@
 	
 	{% for folder in root.folders %}
 	{% for album in folder.folders %}
-	<div class='content' id='{{(folder.name+"_"+album.name)|replace(" ", "_")|replace(".", "_")}}'>
+	<div class='content' id='{{(folder.name+"_"+album.name)|cleanify}}'>
 	<div style="float:left;">
 	
 	<p class="item">Album Info:</p>
