@@ -152,5 +152,5 @@ class File:
 					tags = mutagen.easyid3.EasyID3(self.path)
 				self.artist = tags['artist'][0] if 'artist' in tags else None
 				self.album = tags['album'][0] if 'album' in tags else None
-				self.title = tags['title'][0] if 'title' in tags else None
+				self.title = tags['title'][0] if 'title' in tags else self.name.rsplit('.', 1)[0].decode("utf-8") # everything but the extension
 				self.track = tags['tracknumber'][0] if 'tracknumber' in tags else None
