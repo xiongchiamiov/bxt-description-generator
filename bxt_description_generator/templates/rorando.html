@@ -120,12 +120,21 @@
 			$('.content').css("display", "none");
 			$('#'+divid).css("display", "block");
 		}
+		function toggleMenus() {
+			if ($('.menu').css("display") == "none") {
+				$('.menu').show();
+			} else {
+				$('.menu').hide();
+			}
+		}
 	</script>
 	
 	<div class=menufield id=menu>
+		<a href="#" onclick="toggleMenus()" style="font-size: small; margin-left: 5px; margin-top: 5px;">show/hide all</a><br />
+		
 		{% for folder in root.folders %}
 		<div class=menuitem id=main1><a class="link" onclick="toggleDiv('{{folder.name|cleanify}}');">{{folder.name}}</a></div>
-		<div id={{folder.name|cleanify}} style="display:none;">
+		<div id={{folder.name|cleanify}} class="menu" style="display:none;">
 			{% for album in folder.folders %}
 			<div class=subitem ><a  class="link" onclick="togglecontent('{{(folder.name+"_"+album.name)|cleanify}}')">{{album.name}}</a></div>
 			{% endfor %}
