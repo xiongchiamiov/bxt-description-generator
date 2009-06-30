@@ -21,7 +21,7 @@ def main():
 		license = 'WTFPL',
 		entry_points = """
 			[console_scripts]
-			tgp = bxt_description_generator.bxt_description_generator:main
+			bdg = bxt_description_generator.bxt_description_generator:main
 		""",
 		classifiers = [
 			"Development Status :: 4 - Beta",
