@@ -28,4 +28,11 @@ Original Request
 14:55 <xiong_chiamiov> yeah, I think so  
 14:56 <Chiyachan> Well, if you're able to make it.  
 14:56 <Chiyachan> Not only will I love you.  
-14:56 <Chiyachan> Other people who make large OST torrents will love you.  
+14:56 <Chiyachan> Other people who make large OST torrents will love you.
+
+Usage
+=====
+
+1. Open a terminal (command prompt).
+2. Run `bdg [path to files] [name of template] > [file to output to]`
+	* Ex: `bdg ~/mp3/bxt\ test/ rorando.html > ~/temp/test.html`

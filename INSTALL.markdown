@@ -10,18 +10,16 @@ Python
 ------
 1. Download and run [the installation file](http://www.python.org/ftp/python/2.5.4/python-2.5.4.msi)
 
-Jinja
------
+easy_install
+------------
 1. Download and run [setuptools](http://pypi.python.org/packages/2.5/s/setuptools/setuptools-0.6c9.win32-py2.5.exe#md5=602d06054ec1165e995ae54ac30884d7)
-2. Open a command prompt (Start -> Run -> cmd) and type `C:\Python25\Scripts\easy_install.exe jinja2`
-
-Mutagen
--------
-1. Open a command prompt (Start -> Run -> cmd) and type `C:\Python25\Scripts\easy_install.exe mutagen`
+2. Alter your PATH to include C:\Python25\Scripts
+	* [XP](http://www.computerhope.com/issues/ch000549.htm)
+	* [Vista](http://banagale.com/changing-your-system-path-in-windows-vista.htm)
 
 Get the Script
 --------------
-1. Open a command prompt (Start -> Run -> cmd) and type `C:\Python25\Scripts\easy_install.exe bxt_description_generator`
+1. Open a command prompt (Start -> Run -> cmd) and type `easy_install.exe bxt_description_generator`
 
 Arch Linux
 ==========
