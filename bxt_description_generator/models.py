@@ -49,7 +49,7 @@ class Folder:
 		self.extensions = []
 	
 	def __str__(self):
-		return unicode(self.name, 'utf-8')
+		return self.name
 
 	def scan(self):
 		for name in os.listdir(self.path):

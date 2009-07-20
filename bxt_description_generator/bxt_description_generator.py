@@ -11,6 +11,9 @@ import re
 from models import *
 from jinja2 import Environment, PackageLoader
 
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 def cleanify(name):
 	''' Strip out some things that don't play well in element ids '''
 	return re.sub(r"[\. ']", r'_', name)
