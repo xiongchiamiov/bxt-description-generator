@@ -38,7 +38,7 @@
 		}
 		.menuitem {
 			font-family:  Joyful Juliana,Cambria, Times New Roman, serif;
-			font-color: #ffffff;
+			color: #ffffff;
 			background-color: red;
 			width: 200px;
 			margin-top: 3px;
@@ -126,19 +126,19 @@
 		}
 	</script>
 	
-	<div class=menufield id=menu>
+	<div class="menufield" id="menu">
 		<a href="#" onclick="toggleMenus()" style="font-size: small; margin-left: 5px; margin-top: 5px;">show/hide all</a><br />
 		
 		{% for folder in root.folders %}
-		<div class=menuitem id=main1><a class="link" onclick="toggleDiv('{{folder.name|cleanify}}');">{{folder.name}}</a></div>
-		<div id={{folder.name|cleanify}} class="menu" style="display:none;">
+		<div class="menuitem" id="main1"><a class="link" onclick="toggleDiv('{{folder.name|cleanify}}');">{{folder.name}}</a></div>
+		<div id="{{folder.name|cleanify}}" class="menu" style="display:none;">
 			{% for album in folder.folders %}
-			<div class=subitem ><a  class="link" onclick="togglecontent('{{(folder.name+"_"+album.name)|cleanify}}')">{{album.name}}</a></div>
+			<div class="subitem"><a class="link" onclick="togglecontent('{{(folder.name+"_"+album.name)|cleanify}}')">{{album.name}}</a></div>
 			{% endfor %}
 		</div>
 		{% endfor %}
 	
-		<div class=menuitem style="margin-top:50px;";id=main1><a class="link" onclick="togglecontent('changelog')">Information</a></div>
+		<div class="menuitem" style="margin-top:50px;" id="main1"><a class="link" onclick="togglecontent('changelog')">Information</a></div>
 		
 	</div>		
 
@@ -146,8 +146,8 @@
 	
 	{% for folder in root.folders %}
 	{% for album in folder.folders %}
-	<div class='content' id='{{(folder.name+"_"+album.name)|cleanify}}'>
-	<div style="float:left;">
+	<div class="content" id="{{(folder.name+"_"+album.name)|cleanify}}">
+	<div style="float: left;">
 	
 	<p class="item">Album Info:</p>
 	<p class="list">
@@ -199,7 +199,7 @@
 	<!----------------------------------------------------------------------------->
 	
 	<!-- Content changelog -->
-	<div class='content' id='changelog' >
+	<div class="content" id="changelog">
 		<div style="float:left;">
 			<p class="item">Uploader's Comment</p>
 			<p class="list">
@@ -223,8 +223,8 @@
 	<!----------------------------------------------------------------------------->
 	
 	<!-- Content changelog -->
-	<div class='content' style="display:block;" id='default' >
-		<div style="float:left;">
+	<div class="content" style="display: block;" id="default">
+		<div style="float: left;">
 			<p class="item">
 				
 			</p>
