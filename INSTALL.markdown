@@ -25,21 +25,21 @@ Arch Linux
 ==========
 Python, Jinja, Mutagen, easy_install
 ---------------------------
-1. Go to Terminal, whatever terminal program you may have.
-2. Type `su -` and then type in your root password.
-3. Type `pacman -Sy python python-jinja mutagen setuptools` while in su mode and y for the confirmation prompt to install.
+1. Open a terminal.
+2. Run `pacman -Sy python python-jinja mutagen setuptools` as root.
 
 Get the script
 --------------
-1. While still root, type `easy_install boxtorrents_description_generator`
+1. Also as root, run `easy_install boxtorrents_description_generator`
 
 Ubuntu/Debian
 =============
 Python, Jinja, Mutagen, easy_install
 ---------------------------
-1. Go to Terminal, whatever terminal program you may have.
-2. Type `sudo apt-get install python python-jinja2 python-mutagen python-setuptools` and y for the confirmation prompt to install.
+1. Open a terminal.
+2. Run `sudo apt-get install python python-jinja2 python-mutagen python-setuptools`.
 
 Get the script
 --------------
-1. While still root, type `easy_install boxtorrents_description_generator`
+1. Run `sudo easy_install boxtorrents_description_generator`
+

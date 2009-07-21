@@ -34,5 +34,8 @@ Usage
 =====
 
 1. Open a terminal (command prompt).
-2. Run `bdg [path to files] [name of template] > [file to output to]`
-	* Ex: `bdg ~/mp3/bxt\ test/ rorando.html > ~/temp/test.html`
+2. Run `bdg [path to files] [name of template] > [file to output to]`.  For example, to make a description.html on your Desktop, based off of the folder "Some Music" in your music directory, you would do:
+	* (Linux): `bdg "~/Music/Some Music" rorando.html > ~/Desktop/description.html`
+	* (Windows): `bdg "%USERPROFILE%\Music\Some Music" rorando.html > "%USERPROFILE%\Desktop\description.html"
+3. Open the generated file in your browser, and adjust it in an editor as need be.
+
