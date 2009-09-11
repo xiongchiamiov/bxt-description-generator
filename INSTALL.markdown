@@ -28,7 +28,7 @@ you can check by running `echo %PATH%` in a command prompt.
 
 Get the Script
 --------------
-1. Open a command prompt (Start -> Run -> cmd) and type `easy_install.exe bxt_description_generator`
+1. Open a command prompt (Start -> Run -> cmd) and type `easy_install.exe -U bxt_description_generator`
 
 Arch Linux
 ==========
@@ -39,7 +39,7 @@ Python, Jinja, Mutagen, easy_install
 
 Get the script
 --------------
-1. Also as root, run `easy_install boxtorrents_description_generator`
+1. Also as root, run `easy_install -U boxtorrents_description_generator`
 
 Ubuntu/Debian
 =============
@@ -50,4 +50,4 @@ Python, Jinja, Mutagen, easy_install
 
 Get the script
 --------------
-1. Run `sudo easy_install boxtorrents_description_generator`
+1. Run `sudo easy_install -U boxtorrents_description_generator`
