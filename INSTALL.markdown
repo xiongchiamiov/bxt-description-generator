@@ -39,7 +39,7 @@ Python, Jinja, Mutagen, easy_install
 
 Get the script
 --------------
-1. Also as root, run `easy_install -U boxtorrents_description_generator`
+1. Also as root, run `easy_install -U bxt_description_generator`
 
 Ubuntu/Debian
 =============
@@ -50,4 +50,4 @@ Python, Jinja, Mutagen, easy_install
 
 Get the script
 --------------
-1. Run `sudo easy_install -U boxtorrents_description_generator`
+1. Run `sudo easy_install -U bxt_description_generator`
