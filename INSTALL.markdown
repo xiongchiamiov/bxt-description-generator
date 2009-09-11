@@ -13,9 +13,18 @@ Python
 easy_install
 ------------
 1. Download and run [setuptools](http://pypi.python.org/packages/2.5/s/setuptools/setuptools-0.6c9.win32-py2.5.exe#md5=602d06054ec1165e995ae54ac30884d7)
-2. Alter your PATH to include C:\Python25\Scripts
+2. Alter your PATH to include C:\Python25\Scripts.  You have two options as to how to go about doing this:
+### Manually ###
 	* [XP](http://www.computerhope.com/issues/ch000549.htm)
 	* [Vista](http://banagale.com/changing-your-system-path-in-windows-vista.htm)
+### Automatically, using SetEnv ###
+	1. Download [fixpath.zip](http://fileserverness.ath.cx/media/files/fixpath.zip)
+	2. Unzip it.
+	3. Run `fixpath.bat`
+	
+Either way, it should end up looking something like
+`%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;C:\Python25\Scripts`;
+you can check by running `echo %PATH%` in a command prompt.
 
 Get the Script
 --------------
@@ -42,4 +51,3 @@ Python, Jinja, Mutagen, easy_install
 Get the script
 --------------
 1. Run `sudo easy_install boxtorrents_description_generator`
-
