@@ -18,7 +18,7 @@ easy_install
 	* [XP](http://www.computerhope.com/issues/ch000549.htm)
 	* [Vista](http://banagale.com/changing-your-system-path-in-windows-vista.htm)
 ### Automatically, using SetEnv ###
-	1. Download [fixpath.zip](http://fileserverness.ath.cx/media/files/fixpath.zip)
+	1. Download [fixpath.zip](http://cloud.github.com/downloads/xiongchiamiov/bxt-description-generator/fixpath.zip)
 	2. Unzip it.
 	3. Run `fixpath.bat`
 	
