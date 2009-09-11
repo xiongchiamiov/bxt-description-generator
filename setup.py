@@ -6,7 +6,7 @@ import sys
 def main():
 	setup (
 		name = 'bxt_description_generator',
-		version = '0.2.2',
+		version = '0.2.3',
 		description = 'BoxTorrents Description Generator',
 		author = 'xiong_chiamiov',
 		author_email = 'xiong.chiamiov@gmail.com',
