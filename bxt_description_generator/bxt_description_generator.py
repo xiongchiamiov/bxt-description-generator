@@ -26,7 +26,7 @@ def main():
 		directory = sys.argv[1]
 		template = sys.argv[2]
 	except IndexError:
-		print "Usage: " + sys.argv[0] + " <directory> <template>"
+		sys.stderr.write("Usage: " + sys.argv[0] + " <directory> <template>\n")
 		exit()
 	
 	root = Folder(directory)
