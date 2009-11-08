@@ -16,7 +16,7 @@ easy_install
 2. Alter your PATH to include C:\Python25\Scripts.  You have two options as to how to go about doing this:
 ### Manually ###
 	* [XP](http://www.computerhope.com/issues/ch000549.htm)
-	* [Vista](http://banagale.com/changing-your-system-path-in-windows-vista.htm)
+	* [Vista](http://banagale.com/2007/03/03/changing-your-system-path-in-windows-vista/)
 ### Automatically, using SetEnv ###
 	1. Download [fixpath.zip](http://cloud.github.com/downloads/xiongchiamiov/bxt-description-generator/fixpath.zip)
 	2. Unzip it.
