@@ -30,12 +30,20 @@ Original Request
 14:56 <Chiyachan> Not only will I love you.  
 14:56 <Chiyachan> Other people who make large OST torrents will love you.
 
-Usage
-=====
+Usage (CLI)
+===========
 
 1. Open a terminal (command prompt).
 2. Run `bdg [path to files] [name of template] > [file to output to]`.  For example, to make a description.html on your Desktop, based off of the folder "Some Music" in your music directory, you would do:
 	* (Linux): `bdg "~/Music/Some Music" rorando.html > ~/Desktop/description.html`
 	* (Windows): `bdg "%USERPROFILE%\Music\Some Music" rorando.html > "%USERPROFILE%\Desktop\description.html"
 3. Open the generated file in your browser, and adjust it in an editor as need be.
+
+Usage (GUI)
+===========
+1. Run the command 'bdg'.
+	* (Linux): Most window managers will bring up a run prompt with alt+f2.
+	* (Windows): The Run dialog can be found in the start menu, or accessed by pressing Win+R.
+2. Fill out the forms.
+3. Copy+paste the resulting text into the sandbox.
 

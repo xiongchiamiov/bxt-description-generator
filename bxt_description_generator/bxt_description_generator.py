@@ -14,6 +14,12 @@ from jinja2 import Environment, PackageLoader
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
+def absolute_path(path):
+	''' Get the absolute path of a file, from this script '''
+	ROOT = os.path.dirname(os.path.realpath(__file__))
+	os.path.join(ROOT,path)
+	return os.path.join(ROOT,path)
+
 def cleanify(name):
 	''' Strip out some things that don't play well in element ids '''
 	return re.sub(r"[\. ']", r'_', name)
@@ -26,8 +32,21 @@ def main():
 		directory = sys.argv[1]
 		template = sys.argv[2]
 	except IndexError:
-		sys.stderr.write("Usage: " + sys.argv[0] + " <directory> <template>\n")
-		exit()
+		try:
+			import easygui
+			
+			# get directory from user
+			directory = None
+			while not directory:
+				directory = easygui.diropenbox('Where are the files?')
+			
+			# get template from user
+			template = None
+			while not template:
+				template = easygui.choicebox('What template do you want?', choices=os.listdir(absolute_path('templates')))
+		except ImportError:
+			sys.stderr.write("Usage: " + sys.argv[0] + " <directory> <template>\n")
+			exit()
 	
 	root = Folder(directory)
 	root.scan()
@@ -35,7 +54,12 @@ def main():
 	env = Environment(loader=PackageLoader('bxt_description_generator', 'templates'))
 	env.filters['cleanify'] = cleanify
 	template = env.get_template(template)
-	print template.render(root=root).encode("utf-8")
+	output = template.render(root=root).encode("utf-8")
+	
+	try:
+		easygui.codebox(text=output)
+	except NameError:
+		print output
 
 if __name__ == '__main__':
 	sys.exit(main())

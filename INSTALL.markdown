@@ -26,6 +26,12 @@ Either way, it should end up looking something like
 `%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;C:\Python25\Scripts`;
 you can check by running `echo %PATH%` in a command prompt.
 
+EasyGui (optional, required for GUI)
+------------------------------------
+1. Download [easygui.zip](http://easygui.sourceforge.net/current_version/easygui_v0.93.zip).
+2. Extract the files.
+3. Put `easygui.py` in `C:\Python25\Lib\site-packages`.
+
 Get the Script
 --------------
 1. Open a command prompt (Start -> Run -> cmd) and type `easy_install.exe -U bxt_description_generator`
@@ -37,6 +43,10 @@ Python, Jinja, Mutagen, easy_install
 1. Open a terminal.
 2. Run `pacman -Sy python python-jinja mutagen setuptools` as root.
 
+EasyGui (optional, required for GUI)
+------------------------------------
+1. Install `python-easygui` from the AUR.
+
 Get the script
 --------------
 1. Also as root, run `easy_install -U bxt_description_generator`
@@ -47,6 +57,12 @@ Python, Jinja, Mutagen, easy_install
 ---------------------------
 1. Open a terminal.
 2. Run `sudo apt-get install python python-jinja2 python-mutagen python-setuptools`.
+
+EasyGui (optional, required for GUI)
+------------------------------------
+1. Download [easygui.tar.gz](http://easygui.sourceforge.net/current_version/easygui_v0.93.tar.gz).
+2. Extract the files.
+3. Put `easygui.py` in `/usr/local/lib/python2.6/dist-packages`.
 
 Get the script
 --------------
