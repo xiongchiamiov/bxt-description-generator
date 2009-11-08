@@ -6,11 +6,11 @@ import sys
 def main():
 	setup (
 		name = 'bxt_description_generator',
-		version = '0.2.3',
+		version = '0.3',
 		description = 'BoxTorrents Description Generator',
 		author = 'xiong_chiamiov',
 		author_email = 'xiong.chiamiov@gmail.com',
-		url = 'http://github.com/xiongchiamiov/bxt-description-generator/tree/master',
+		url = 'http://github.com/xiongchiamiov/bxt-description-generator',
 		packages = ['bxt_description_generator'],
 		package_data  =  {'bxt_description_generator': ['templates/*']},
 		zip_safe = False,
