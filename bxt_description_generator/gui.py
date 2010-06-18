@@ -32,6 +32,8 @@ class QFileChooser(QWidget):
 		self.lineEdit.setText(directory)
 
 class QTemplatePreview(QWidget):
+	sourceGenerated = pyqtSignal(QString)
+	
 	def __init__(self, parent=None, description='', thumb=''):
 		QWidget.__init__(self, parent)
 		
@@ -49,6 +51,18 @@ class QTemplatePreview(QWidget):
 		wrapper.addWidget(label)
 		
 		self.setLayout(wrapper)
+	
+	@pyqtSlot()
+	def mousePressEvent(self, event):
+		source = '''\
+<html>
+<head></head>
+<body>
+Hello.
+</body>
+</html>
+'''
+		self.sourceGenerated.emit(source)
 
 class QCustomizationBox(QWidget):
 	def __init__(self, parent=None, name='', value=''):
@@ -104,9 +118,11 @@ class Ui_MainWindow(QWidget):
 		
 		templateGroup = QGroupBox('Templates')
 		templateGroupWrapper = QVBoxLayout(templateGroup)
-		templateGroupWrapper.addWidget(QTemplatePreview(thumb='thumbs/rorando.jpg', description='Nullam non sem et mi porta aliquet eget non odio. Proin vehicula dapibus tortor, a venenatis tortor venenatis in. Pellentesque ultricies diam vitae mauris iaculis tristique. Praesent metus tortor, dictum nec consequat id, aliquet ut dui. Curabitur vestibulum condimentum fermentum. Phasellus quam tellus, scelerisque et pretium a, suscipit eget risus. Duis pharetra bibendum dolor, a porta metus consequat a.'))
-		templateGroupWrapper.addWidget(QTemplatePreview(thumb='thumbs/rorando.jpg', description='Nullam non sem et mi porta aliquet eget non odio. Proin vehicula dapibus tortor, a venenatis tortor venenatis in. Pellentesque ultricies diam vitae mauris iaculis tristique. Praesent metus tortor, dictum nec consequat id, aliquet ut dui. Curabitur vestibulum condimentum fermentum. Phasellus quam tellus, scelerisque et pretium a, suscipit eget risus. Duis pharetra bibendum dolor, a porta metus consequat a.'))
-		templateGroupWrapper.addWidget(QTemplatePreview(thumb='thumbs/rorando.jpg', description='Nullam non sem et mi porta aliquet eget non odio. Proin vehicula dapibus tortor, a venenatis tortor venenatis in. Pellentesque ultricies diam vitae mauris iaculis tristique. Praesent metus tortor, dictum nec consequat id, aliquet ut dui. Curabitur vestibulum condimentum fermentum. Phasellus quam tellus, scelerisque et pretium a, suscipit eget risus. Duis pharetra bibendum dolor, a porta metus consequat a.'))
+		templatePreviews = []
+		for i in range(3):
+			templatePreviews.append(QTemplatePreview(thumb='thumbs/rorando.jpg', description='Nullam non sem et mi porta aliquet eget non odio. Proin vehicula dapibus tortor, a venenatis tortor venenatis in. Pellentesque ultricies diam vitae mauris iaculis tristique. Praesent metus tortor, dictum nec consequat id, aliquet ut dui. Curabitur vestibulum condimentum fermentum. Phasellus quam tellus, scelerisque et pretium a, suscipit eget risus. Duis pharetra bibendum dolor, a porta metus consequat a.'))
+		for templatePreview in templatePreviews:
+			templateGroupWrapper.addWidget(templatePreview)
 		templateTabWrapper.addWidget(templateGroup)
 		
 		customizationsGroup = QGroupBox('Customizations')
@@ -132,14 +148,16 @@ class Ui_MainWindow(QWidget):
 		### Preview
 		previewTab = QWidget()
 		preview = QWebView(previewTab)
-		#preview.setHtml(source)
-		preview.setUrl(QUrl('http://google.com'))
+		for templatePreview in templatePreviews:
+			templatePreview.sourceGenerated.connect(lambda source: preview.setHtml(source))
 		rightTabWidget.addTab(preview, 'Preview')
 		
 		### Source
 		sourceTab = QWidget()
 		sourceDisplay = QPlainTextEdit(sourceTab)
 		sourceDisplay.setReadOnly(True)
+		for templatePreview in templatePreviews:
+			templatePreview.sourceGenerated.connect(sourceDisplay.setPlainText)
 		rightTabWidget.addTab(sourceTab, 'Source')
 		
 		wrapper.addWidget(rightTabWidget)
