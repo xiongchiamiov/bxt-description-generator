@@ -1,19 +1,35 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from PyQt4.QtCore import QUrl, Qt
+from PyQt4.QtCore import QUrl, Qt, SIGNAL, SLOT, pyqtSignal, pyqtSlot, QString
 from PyQt4.QtGui import *
 from PyQt4.QtWebKit import QWebView
 
 class QFileChooser(QWidget):
+	directoryChanged = pyqtSignal(QString)
+	
 	def __init__(self, parent=None, directory=''):
 		QWidget.__init__(self, parent)
 		
 		wrapper = QHBoxLayout(parent)
-		wrapper.addWidget(QLineEdit(directory))
-		wrapper.addWidget(QPushButton('Browse'))
+		self.lineEdit = QLineEdit(directory)
+		pushButton = QPushButton('Browse')
+		wrapper.addWidget(self.lineEdit)
+		wrapper.addWidget(pushButton)
+		
+		self.directoryChanged.connect(self.change_directory)
+		self.connect(pushButton, SIGNAL('clicked()'),
+		             self, SLOT('choose_file()'))
 		
 		self.setLayout(wrapper)
+	
+	@pyqtSlot()
+	def choose_file(self):
+		directory = QFileDialog.getExistingDirectory(parent=self, directory=self.lineEdit.displayText())
+		self.directoryChanged.emit(directory)
+	
+	def change_directory(self, directory):
+		self.lineEdit.setText(directory)
 
 class QTemplatePreview(QWidget):
 	def __init__(self, parent=None, description='', thumb=''):
@@ -60,7 +76,6 @@ class Ui_MainWindow(QWidget):
 		fileTab = QWidget()
 		fileTabWrapper = QVBoxLayout(fileTab)
 		
-		#fileTabWrapper.addWidget(QFileDialog())
 		fileTabWrapper.addWidget(QFileChooser(directory='/home/pearson/Documents'))
 		
 		fileTree = QTreeWidget()
