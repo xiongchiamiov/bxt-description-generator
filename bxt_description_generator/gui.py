@@ -60,6 +60,17 @@ class QCustomizationBox(QWidget):
 		
 		self.setLayout(wrapper)
 
+class QFileTreeSelector(QTreeView):
+	def __init__(self, parent=None, directory=''):
+		QTreeView.__init__(self, parent)
+		
+		self.filesystem = QFileSystemModel()
+		self.setModel(self.filesystem)
+		self.setRootIndex(self.filesystem.setRootPath(directory))
+	
+	def change_directory(self, directory):
+		self.setRootIndex(self.filesystem.setRootPath(directory))
+
 class Ui_MainWindow(QWidget):
 	def __init__(self, parent=None):
 		QWidget.__init__(self, parent)
@@ -76,14 +87,14 @@ class Ui_MainWindow(QWidget):
 		fileTab = QWidget()
 		fileTabWrapper = QVBoxLayout(fileTab)
 		
-		fileTabWrapper.addWidget(QFileChooser(directory='/home/pearson/Documents'))
+		directory = '/home/pearson/Documents'
+		fileChooser = QFileChooser(directory=directory)
+		fileTabWrapper.addWidget(fileChooser)
 		
-		fileTree = QTreeWidget()
-		fileList = [QTreeWidgetItem(['foo']), QTreeWidgetItem(['bar']), QTreeWidgetItem(['baz'])]
-		fileList[0].addChildren([QTreeWidgetItem(['foo1']), QTreeWidgetItem(['foo2'])])
-		fileList[0].child(0).addChild(QTreeWidgetItem(['foo1a']))
-		fileTree.addTopLevelItems(fileList)
-		fileTabWrapper.addWidget(fileTree)
+		fileTreeSelector = QFileTreeSelector(directory=directory)
+		fileChooser.directoryChanged.connect(fileTreeSelector.change_directory)
+		
+		fileTabWrapper.addWidget(fileTreeSelector)
 		
 		tabWidget.addTab(fileTab, 'Files')
 		
