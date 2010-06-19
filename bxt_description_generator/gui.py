@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+from models import Folder
 from PyQt4.QtCore import QUrl, Qt, SIGNAL, SLOT, pyqtSignal, pyqtSlot, QString
 from PyQt4.QtGui import *
 from PyQt4.QtWebKit import QWebView
@@ -74,16 +75,30 @@ class QCustomizationBox(QWidget):
 		
 		self.setLayout(wrapper)
 
-class QFileTreeSelector(QTreeView):
-	def __init__(self, parent=None, directory=''):
-		QTreeView.__init__(self, parent)
-		
-		self.filesystem = QFileSystemModel()
-		self.setModel(self.filesystem)
-		self.setRootIndex(self.filesystem.setRootPath(directory))
-	
+class QFileTreeSelector(QTreeWidget):
 	def change_directory(self, directory):
-		self.setRootIndex(self.filesystem.setRootPath(directory))
+		self.clear()
+		# we need to convert from a QString to a normal Python string
+		root = Folder(str(directory))
+		# fill out our Folder/File tree
+		root.scan()
+		# and then turn it into something we can display
+		self.addTopLevelItems(self.create_tree(root).takeChildren())
+	
+	# this should take in a Folder
+	@staticmethod
+	def create_tree(folder):
+		root = QTreeWidgetItem([folder.name])
+		
+		for childFolder in folder.folders:
+			child = QFileTreeSelector.create_tree(childFolder)
+			# is it a directory empty of files we want (eg 'Scans' folder)?
+			if child.childCount():
+				root.addChild(child)
+		for musicFile in folder.files['music']:
+			root.addChild(QTreeWidgetItem([musicFile.name]))
+		
+		return root
 
 class Ui_MainWindow(QWidget):
 	def __init__(self, parent=None):
@@ -105,7 +120,7 @@ class Ui_MainWindow(QWidget):
 		fileChooser = QFileChooser(directory=directory)
 		fileTabWrapper.addWidget(fileChooser)
 		
-		fileTreeSelector = QFileTreeSelector(directory=directory)
+		fileTreeSelector = QFileTreeSelector()
 		fileChooser.directoryChanged.connect(fileTreeSelector.change_directory)
 		
 		fileTabWrapper.addWidget(fileTreeSelector)
