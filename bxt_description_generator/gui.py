@@ -2,6 +2,7 @@
 
 from glob import glob
 import json
+import os
 import sys
 from models import Folder
 from PyQt4.QtCore import QUrl, Qt, SIGNAL, SLOT, pyqtSignal, pyqtSlot, QString
@@ -123,7 +124,7 @@ class Ui_MainWindow(QWidget):
 		fileTab = QWidget()
 		fileTabWrapper = QVBoxLayout(fileTab)
 		
-		directory = '/home/pearson/Documents'
+		directory = os.getenv('HOME') if os.getenv('HOME') else os.getenv('HOMEPATH')
 		fileChooser = QFileChooser(directory=directory)
 		fileTabWrapper.addWidget(fileChooser)
 		
