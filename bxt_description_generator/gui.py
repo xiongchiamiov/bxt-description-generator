@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from glob import glob
+import json
 import sys
 from models import Folder
 from PyQt4.QtCore import QUrl, Qt, SIGNAL, SLOT, pyqtSignal, pyqtSlot, QString
@@ -33,20 +35,23 @@ class QFileChooser(QWidget):
 		self.lineEdit.setText(directory)
 
 class QTemplatePreview(QWidget):
+	templateChanged = pyqtSignal(QString, dict)
 	sourceGenerated = pyqtSignal(QString)
 	
-	def __init__(self, parent=None, description='', thumb=''):
+	def __init__(self, name, parent=None):
 		QWidget.__init__(self, parent)
+		self.name = name
+		self.data = json.load(open('templates/%s.json' % name))
 		
 		wrapper = QHBoxLayout(parent)
 		
-		image = QPixmap(thumb)
+		image = QPixmap("templates/%s.jpg" % name)
 		imageWrapper = QLabel()
 		imageWrapper.setPixmap(image)
 		wrapper.addWidget(imageWrapper)
 		
 		label = QLabel()
-		label.setText(description)
+		label.setText(self.data['description'])
 		label.setWordWrap(True)
 		label.setAlignment(Qt.AlignTop)
 		wrapper.addWidget(label)
@@ -55,6 +60,8 @@ class QTemplatePreview(QWidget):
 	
 	@pyqtSlot()
 	def mousePressEvent(self, event):
+		self.templateChanged.emit(self.name, self.data['customizations'])
+		
 		source = '''\
 <html>
 <head></head>
@@ -134,17 +141,16 @@ class Ui_MainWindow(QWidget):
 		templateGroup = QGroupBox('Templates')
 		templateGroupWrapper = QVBoxLayout(templateGroup)
 		templatePreviews = []
-		for i in range(3):
-			templatePreviews.append(QTemplatePreview(thumb='thumbs/rorando.jpg', description='Nullam non sem et mi porta aliquet eget non odio. Proin vehicula dapibus tortor, a venenatis tortor venenatis in. Pellentesque ultricies diam vitae mauris iaculis tristique. Praesent metus tortor, dictum nec consequat id, aliquet ut dui. Curabitur vestibulum condimentum fermentum. Phasellus quam tellus, scelerisque et pretium a, suscipit eget risus. Duis pharetra bibendum dolor, a porta metus consequat a.'))
+		for filename in glob('templates/*.json'):
+			# create preview, but get just the template name from the filename
+			templatePreviews.append(QTemplatePreview(filename.replace('templates/', '').replace('.json', '')))
 		for templatePreview in templatePreviews:
 			templateGroupWrapper.addWidget(templatePreview)
+			templatePreview.templateChanged.connect(self.set_previews)
 		templateTabWrapper.addWidget(templateGroup)
 		
 		customizationsGroup = QGroupBox('Customizations')
-		customizationsGroupWrapper = QVBoxLayout(customizationsGroup)
-		customizationsGroupWrapper.addWidget(QCustomizationBox(name='Outline', value='#FFF'))
-		customizationsGroupWrapper.addWidget(QCustomizationBox(name='Text', value='#000'))
-		customizationsGroupWrapper.addWidget(QCustomizationBox(name='Font-size', value='12pt'))
+		self.customizationsGroupWrapper = QVBoxLayout(customizationsGroup)
 		templateTabWrapper.addWidget(customizationsGroup)
 		
 		saveWidget = QHBoxLayout()
@@ -179,6 +185,20 @@ class Ui_MainWindow(QWidget):
 		
 		self.setLayout(wrapper)
 		self.resize(800, 600)
+	
+	def set_previews(self, name, customizations):
+		# get rid of all the customizations we've got currently
+		while self.customizationsGroupWrapper.count():
+			# we get back a QWidgetItem, so we need to pull the actual QWidget out
+			widget = self.customizationsGroupWrapper.itemAt(0).widget()
+			self.customizationsGroupWrapper.removeWidget(widget)
+			# for whatever reason, just removing it and/or destroying it
+			# doesn't do what we want...
+			widget.setParent(None)
+		
+		# and add in our new ones
+		for key, value in customizations.items():
+			self.customizationsGroupWrapper.addWidget(QCustomizationBox(name=key, value=value))
 
 
 if __name__ == "__main__":
@@ -186,3 +206,5 @@ if __name__ == "__main__":
 	myapp = Ui_MainWindow()
 	myapp.show()
 	sys.exit(app.exec_())
+
+#from PyQt4 import QtCore; QtCore.pyqtRemoveInputHook();	import pudb; pudb.set_trace()
