@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from bxt_description_generator import cleanify
 from glob import glob
+from jinja2 import Environment, PackageLoader
 import json
 import os
 import sys
@@ -8,6 +10,8 @@ from models import Folder
 from PyQt4.QtCore import QUrl, Qt, SIGNAL, SLOT, pyqtSignal, pyqtSlot, QString
 from PyQt4.QtGui import *
 from PyQt4.QtWebKit import QWebView
+
+root = Folder('')
 
 class QFileChooser(QWidget):
 	directoryChanged = pyqtSignal(QString)
@@ -37,7 +41,7 @@ class QFileChooser(QWidget):
 
 class QTemplatePreview(QWidget):
 	templateChanged = pyqtSignal(QString, dict)
-	sourceGenerated = pyqtSignal(QString)
+	templateDataChanged = pyqtSignal(QString)
 	
 	def __init__(self, name, parent=None):
 		QWidget.__init__(self, parent)
@@ -62,29 +66,27 @@ class QTemplatePreview(QWidget):
 	@pyqtSlot()
 	def mousePressEvent(self, event):
 		self.templateChanged.emit(self.name, self.data['customizations'])
-		
-		source = '''\
-<html>
-<head></head>
-<body>
-Hello.
-</body>
-</html>
-'''
-		self.sourceGenerated.emit(source)
+		self.templateDataChanged.emit(self.name)
 
 class QCustomizationBox(QWidget):
 	def __init__(self, parent=None, name='', value=''):
 		QWidget.__init__(self, parent)
+		
+		self.name = name
 		
 		wrapper = QHBoxLayout(parent)
 		wrapper.addWidget(QLineEdit(value))
 		wrapper.addWidget(QLabel(name))
 		
 		self.setLayout(wrapper)
+	
+	def getValue(self):
+		return self.children()[1].text()
 
 class QFileTreeSelector(QTreeWidget):
 	def change_directory(self, directory):
+		global root
+		
 		self.clear()
 		# we need to convert from a QString to a normal Python string
 		root = Folder(str(directory))
@@ -109,6 +111,9 @@ class QFileTreeSelector(QTreeWidget):
 		return root
 
 class Ui_MainWindow(QWidget):
+	templateDataChanged = pyqtSignal(QString, dict)
+	sourceGenerated = pyqtSignal(QString)
+	
 	def __init__(self, parent=None):
 		QWidget.__init__(self, parent)
 		
@@ -128,10 +133,10 @@ class Ui_MainWindow(QWidget):
 		fileChooser = QFileChooser(directory=directory)
 		fileTabWrapper.addWidget(fileChooser)
 		
-		fileTreeSelector = QFileTreeSelector()
-		fileChooser.directoryChanged.connect(fileTreeSelector.change_directory)
+		self.fileTreeSelector = QFileTreeSelector()
+		fileChooser.directoryChanged.connect(self.fileTreeSelector.change_directory)
 		
-		fileTabWrapper.addWidget(fileTreeSelector)
+		fileTabWrapper.addWidget(self.fileTreeSelector)
 		
 		tabWidget.addTab(fileTab, 'Files')
 		
@@ -148,6 +153,7 @@ class Ui_MainWindow(QWidget):
 		for templatePreview in templatePreviews:
 			templateGroupWrapper.addWidget(templatePreview)
 			templatePreview.templateChanged.connect(self.set_previews)
+			templatePreview.templateDataChanged.connect(self.gather_template_data)
 		templateTabWrapper.addWidget(templateGroup)
 		
 		customizationsGroup = QGroupBox('Customizations')
@@ -170,22 +176,22 @@ class Ui_MainWindow(QWidget):
 		### Preview
 		previewTab = QWidget()
 		preview = QWebView(previewTab)
-		for templatePreview in templatePreviews:
-			templatePreview.sourceGenerated.connect(lambda source: preview.setHtml(source))
+		self.sourceGenerated.connect(lambda source: preview.setHtml(source))
 		rightTabWidget.addTab(preview, 'Preview')
 		
 		### Source
 		sourceTab = QWidget()
 		sourceDisplay = QPlainTextEdit(sourceTab)
 		sourceDisplay.setReadOnly(True)
-		for templatePreview in templatePreviews:
-			templatePreview.sourceGenerated.connect(sourceDisplay.setPlainText)
+		self.sourceGenerated.connect(sourceDisplay.setPlainText)
 		rightTabWidget.addTab(sourceTab, 'Source')
 		
 		wrapper.addWidget(rightTabWidget)
 		
 		self.setLayout(wrapper)
 		self.resize(800, 600)
+		
+		self.templateDataChanged.connect(self.generate_source)
 	
 	def set_previews(self, name, customizations):
 		# get rid of all the customizations we've got currently
@@ -200,6 +206,27 @@ class Ui_MainWindow(QWidget):
 		# and add in our new ones
 		for key, value in customizations.items():
 			self.customizationsGroupWrapper.addWidget(QCustomizationBox(name=key, value=value))
+	
+	def gather_template_data(self, name):
+		customizations = {}
+		for i in range(self.customizationsGroupWrapper.count()):
+			widget = self.customizationsGroupWrapper.itemAt(i).widget()
+			customizations[widget.name] = widget.getValue()
+		
+		self.templateDataChanged.emit(name, customizations)
+	
+	def generate_source(self, name, customizations):
+		# translate QStrings into Python strings
+		data = dict((str(key), str(value)) for (key, value) in customizations.items())
+		global root
+		data['root'] = root
+		
+		env = Environment(loader=PackageLoader('bxt_description_generator', 'templates'))
+		env.filters['cleanify'] = cleanify
+		template = env.get_template("%s.html" % name)
+		output = template.render(data).encode("utf-8")
+		
+		self.sourceGenerated.emit(output)
 
 
 if __name__ == "__main__":

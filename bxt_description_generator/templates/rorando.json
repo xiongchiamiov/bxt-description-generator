@@ -1,8 +1,8 @@
 {
 	"description": "Designed for nested albums.",
 	"customizations": {
-		"body font-size": "12pt",
-		"item font-size": "14px",
-		"item color": "black"
+		"body_font_size": "12pt",
+		"item_font_size": "14px",
+		"item_color": "black"
 	}
 }
